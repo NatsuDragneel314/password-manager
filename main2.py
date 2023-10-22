@@ -1,12 +1,12 @@
 from cryptography.fernet import Fernet
-import tkinter as Tk
-from tkinter.messagebox import showerror,showinfo,showwarning
 import json,os,getpass,pyperclip,smtplib,ssl
 from random import randint,random
 
+#generate encryption key
 def generate_key():
     return Fernet.generate_key()
 
+#initialize cipher
 def initialize_cipher(key):
     return Fernet(key)
 
@@ -32,13 +32,15 @@ while True:
       sum(char in digits for char in pwd)>=2):
           break
 
-
+#encrypt password function
 def encrypt_passowrd(cipher,password):
     return cipher.encrypt(password.encode()).decode()
 
+#decrypt password function
 def decrypt_password(cipher,encrypt_password):
     return cipher.decrypt(encrypt_password.encode()).decode()
 
+#view websites function
 def view_websites():
     try:
         with open('passwords.json','r') as data:
@@ -50,6 +52,7 @@ def view_websites():
     except FileNotFoundError:
         print("You have not saved any passords!!")
 
+# creating encryption key
 key_filename="key.key"
 if os.path.exists(key_filename):
     with open(key_filename,'rb') as key_file:
@@ -61,6 +64,7 @@ else:
 
 cipher=initialize_cipher(key)
 
+#defining function for adding password
 def add_password(website,password):
     if not os.path.exists('password.json'):
         data=[]
@@ -81,6 +85,7 @@ def add_password(website,password):
     with open("passwords.json",'w') as file:
         json.dump(data,file,indent=4)
 
+#defining function for getiing the saved password
 def get_password(website):
     if not os.path.exists("passwords.json"):
         return None
@@ -96,13 +101,14 @@ def get_password(website):
             return decrypted_password
     return None    
 
+#for sending the random generated otp to email
 import smtplib
 from email.mime.text import MIMEText
 subject = "Email Subject"
-body = f"This is the body of the text message {pwd}"
-sender = "arthurlewin2255@gmail.com"
-recipients = "jackdenin17@gmail.com"
-password = "xmwr ofpt cyer sgtm"
+body = f"This is the your OTP: {pwd}"
+sender = "sender@email.com"
+recipients = "reciver@gmail.com"
+password = "gmail app password"
 
 
 def send_email(subject, body, sender, recipients, password):
@@ -115,6 +121,7 @@ def send_email(subject, body, sender, recipients, password):
                 smtp_server.sendmail(sender, recipients, msg.as_string())
                 print("Message sent!")
 
+#main 
 while True:
     print("1.login")
     print('2. quit')
@@ -160,4 +167,3 @@ while True:
        break
 
 
-#xmwr ofpt cyer sgtm
